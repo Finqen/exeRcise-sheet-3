@@ -47,14 +47,16 @@ c)  For all of the following tasks in this exercise sheet we ask you to
 d)  Name 2 strengths and 2 weaknesses of git. (Don't forget to create a
     commit after this answer, see *1c*)
     
-    ### Pros:\- Greate community support & active development (started by Linus Torvalds)\- performance (efficient/fast for large repositories)
-    ### Cons:\- Complex for beginners (steep learning curve)\- Not possible to handle large binaries (extra solution needed: Git LFS(Large File Storage))
+    ### Pros:<br>- Great community support & active development (started by Linus Torvalds)<br>- Good performance (efficient/fast for large repositories)
+    ### Cons:<br>- Complex for beginners (steep learning curve)<br>- Not possible to handle large binaries (extra solution needed: Git LFS(Large File Storage))
     
 e)  Knit this exercise sheet. Some new files will automatically be
     generated when knitting the sheet e.g. the HTML page. Ignore these
     files, as we only want to track the source files themselves. You
     can, but don't need to create a `.gitignore` file. Just do not
     commit these files manually.
+    
+    ### updated .gitignore with <*.html> after knitting
 
 ## Exercise 2: Putting your Repository on GitHub (3 Points)
 
