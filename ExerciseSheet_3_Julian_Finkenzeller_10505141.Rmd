@@ -6,6 +6,10 @@ date: "`r Sys.Date()`"
 output: distill::distill_article
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE)
+```
+
 ## General Remarks
 
 -   You can submit your solutions in teams of up to 3 students.
@@ -47,8 +51,8 @@ c)  For all of the following tasks in this exercise sheet we ask you to
 d)  Name 2 strengths and 2 weaknesses of git. (Don't forget to create a
     commit after this answer, see *1c*)
     
-    ### Pros:<br>- Great community support & active development (started by Linus Torvalds)<br>- Good performance (efficient/fast for large repositories)
-    ### Cons:<br>- Complex for beginners (steep learning curve)<br>- Not possible to handle large binaries (extra solution needed: Git LFS(Large File Storage))
+### Pros:<br>- Great community support & active development (started by Linus Torvalds)<br>- Good performance (efficient/fast for large repositories)
+### Cons:<br>- Complex for beginners (steep learning curve)<br>- Not possible to handle large binaries (extra solution needed: Git LFS(Large File Storage))
     
 e)  Knit this exercise sheet. Some new files will automatically be
     generated when knitting the sheet e.g. the HTML page. Ignore these
@@ -56,7 +60,7 @@ e)  Knit this exercise sheet. Some new files will automatically be
     can, but don't need to create a `.gitignore` file. Just do not
     commit these files manually.
     
-    ### updated .gitignore with <*.html> after knitting
+### updated .gitignore with <*.html> after knitting
 
 ## Exercise 2: Putting your Repository on GitHub (3 Points)
 
@@ -67,20 +71,20 @@ a)  Create a new repository on GitHub in your account named
     we are able to see it for grading. Add the link to the repository
     below:
     
-    ### Repository url: [https://github.com/Finqen/exeRcise-sheet-3](https://github.com/Finqen/exeRcise-sheet-3)
+### Repository url: [https://github.com/Finqen/exeRcise-sheet-3](https://github.com/Finqen/exeRcise-sheet-3)
     
 b)  Push your code to this new repository by copying and executing the
     snippet on github listed under
     `…or push an existing repository from the command line`.
     
-    ### Added existing repository to git with following commands:
+### Added existing repository to git with following commands:
     `git remote add origin https://github.com/Finqen/exeRcise-sheet-3.git`
     `git branch -M develop` <br>
     `git push -u origin develop`
 c)  Regularly push your latest changes to GitHub again and especially do
     so when you are finished with this sheet.
     
-    ### Completed 2c) by commiting and pushing
+### Completed 2c) by commiting and pushing
 
 ## Exercise 3: Pixar Films (4 Points)
 
@@ -97,7 +101,25 @@ a)  Load the `pixar_films` dataset into R. Clean the dataset by removing
     the possible values and what do they mean? Create a factor variable
     for the film rating. Why is this appropriate?
 
-<!-- -->
+```{r, echo=TRUE}
+library(readr)
+pixar_films <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-03-11/pixar_films.csv')
+public_response <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-03-11/public_response.csv')
+
+library(tidyverse)
+pixar_films_clean <- pixar_films %>%
+  filter(!is.na(film)) %>% filter(film != "")
+
+pixar_films_clean %>% distinct(film_rating)
+```
+### Outcomes for film_ratings are: G, PG, N/A<br>"PG" stands for Parental Guidance Suggested, movie contains elements parents could possibly don't want their kids to see<br>"G" = General Audience, movie is fine to watch for every age group - German FSK 0<br> "N/A", no rating available for the movie, not rated yet or no data.
+
+```{r, echo=TRUE}
+pixar_films_clean <- pixar_films_clean %>% mutate(film_rating = as.factor(film_rating))
+str(pixar_films_clean$film_rating)
+```
+
+### film_rating is categorical variable, here we are transforming it to a factor so that we are able to better use it in model interpretations (linear regression) or when visualizing the data in plots. In our case it is negligible, but for large datasets storing it in repeated categories is more memory efficient than storing in characters
 
 b)  Inspect the film titles manually. Which films form a film series? A
     film series can be identified by a common word in the titles of the
