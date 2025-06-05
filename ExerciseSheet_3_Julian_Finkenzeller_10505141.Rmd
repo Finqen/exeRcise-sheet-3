@@ -72,6 +72,11 @@ a)  Create a new repository on GitHub in your account named
 b)  Push your code to this new repository by copying and executing the
     snippet on github listed under
     `…or push an existing repository from the command line`.
+    
+    ### Added existing repository to git with following commands:
+    `git remote add origin https://github.com/Finqen/exeRcise-sheet-3.git`
+    `git branch -M develop` <br>
+    `git push -u origin develop`
 c)  Regularly push your latest changes to GitHub again and especially do
     so when you are finished with this sheet.
 
