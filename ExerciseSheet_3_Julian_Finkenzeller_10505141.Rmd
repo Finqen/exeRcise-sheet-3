@@ -223,21 +223,93 @@ b)  Download the dataset and track it in git.
 
 c)  Put the name / title of the dataset and a link to it below.
 
--   Dataset Name: 
--   Link: <https://github.com/owid/owid-datasets/>...
+-   Dataset Name: Alcohol consumption in USA since 1850
+-   Link: [https://github.com/owid/owid-datasets/blob/master/datasets/Alcohol%20consumption%20in%20USA%20since%201850%20—%20NIAAA/Alcohol%20consumption%20in%20USA%20since%201850%20—%20NIAAA.csv](https://github.com/owid/owid-datasets/blob/master/datasets/Alcohol%20consumption%20in%20USA%20since%201850%20—%20NIAAA/Alcohol%20consumption%20in%20USA%20since%201850%20—%20NIAAA.csv)
 
 d)  Come up with a (research) question you want to answer with the data
     and briefly explain why you believe this is an interesting question
     within one sentence. It should be a question that can be answered
     with the dataset and using R.
+
+### Research Question: How is the total alcohol consumption in the United States - "All beverages(NIAAA)" influenced over time? Informal: Are we drinking more alcohol today(means 2013 in this dataset) than in 1850, 1950, 1975? <br>Info: National Institute on Alcohol Abuse and Alcoholism = NIAAA
     
 e)  Use R to answer your chosen question. Please limit your analysis to
     the functions and techniques we have covered so far in the course.
     You are **not expected** to use advanced statistical models or
     external packages which haven't been introduced.
+    
+```{r plot-beverages-time, fig.cap="Plot for consumption of all beverages over time"}
+alcohol_consumption <- read_csv("data/Alcohol consumption in USA since 1850 — NIAAA.csv")
+
+alcohol_consumption <- alcohol_consumption %>% rename(All_Beverages=`All beverages (NIAAA)`, Beer = `Beer (NIAAA)`, Wine = `Wine (NIAAA)`, Spirits = `Spirits (NIAAA)`)
+
+# quick plot for overview
+ggplot(alcohol_consumption, aes(x = Year, y = All_Beverages)) +
+  geom_point()
+
+# creating filtered sets for the years
+
+alcohol_consumption_1950 <- alcohol_consumption %>% filter(Year >= 1950)
+
+alcohol_consumption_1975 <- alcohol_consumption %>% filter(Year >= 1975)
+
+library(easystats)
+
+lm_alcohol <- lm(All_Beverages ~ Year, data = alcohol_consumption)
+lm_alcohol_1950 <- lm(All_Beverages ~ Year, data = alcohol_consumption_1950)
+lm_alcohol_1975 <- lm(All_Beverages ~ Year, data = alcohol_consumption_1975)
+
+
+report(lm_alcohol) %>% summary()
+summary(lm_alcohol)
+
+```
+
+
+### Alcohol consumption 1850 - 2013: <br> Every year the alcohol consumption increases by ~0.02 liters of ethanol per capita. R² = 0.137, 13,7% of the variation in total alcohol consumption is explained by year alone. Means there is a lot of factors like prohibition, recession, technological progression, world wars, oil crisis which are influencing the alcohol a lot more than just the years.
+
+```{r}
+report(lm_alcohol_1950) %>% summary()
+summary(lm_alcohol_1950)
+```
+
+### Alcohol consumption 1950 - 2013: <br> Every year the alcohol consumption increases by ~0.001 liters of ethanol per capita. R² = 0.03494, ~3,5% of the variation in total alcohol consumption is explained by year alone. Means there is even more factors in these time period which have a lot more influence that just the year. Also because of the smaller estimate, we can conclude from that the drinking difference between 1950 and 2013 is not as big as between 1850 and 2013.
+
+```{r}
+report(lm_alcohol_1975) %>% summary()
+summary(lm_alcohol_1975)
+```
+
+
+### Alcohol consumption 1975 - 2013: <br> Every year the alcohol consumption decreases by ~0.06 liters of ethanol per capita. R² = 0.6199, ~62% of the variation in total alcohol consumption is explained by year alone. Means between and 1975 and 2013 should have been published a health study about how unhealthy and risky alcohol consumption is due to the big decrease (compared to our other models), also fitness awareness and political factors like drinking law ages and taxation could be the reason.
+
 f)  Create a meaningful plot / figure with the dataset. Make sure to
     provide a figure caption (via the chunk options / Rmarkdown) and
     correctly label the figure.
+    
+```{r time-change-plot, fig.cap="Plot for alcohol consumption over time in the United States"}
+
+alcohol_consumption <- alcohol_consumption %>%
+  mutate(Period = case_when(
+    Year < 1920 ~ "Pre 1920",
+    Year >= 1920 & Year <= 1935 ~ "Prohibition (1920–1935)",
+    Year > 1935 & Year <= 1975 ~ "World War 2 & Cold War (1946–1975)",
+    Year > 1975 ~ "Health Awareness",
+    TRUE ~ "Other"
+  ))
+
+ggplot(alcohol_consumption, aes(x = Year, y = All_Beverages, color = Period)) +
+  geom_point(size = 2) +
+  geom_smooth(method = "lm", se = FALSE, color = "black", linetype = "dashed") +
+  geom_smooth(method = "lm", data = alcohol_consumption_1950, se = FALSE, color = "blue", linetype = "dashed") +
+   geom_smooth(method = "lm", data = alcohol_consumption_1975, se = FALSE, color = "brown", linetype = "dashed") +
+  labs(title = "Alcohol consumption over time in the United States",
+       subtitle = "Consumption of liters of ethanol per capita with dashed linear regression lines for the different periods",
+       x = "Year",
+       y = "Ethanol in liters",
+       color = "Time Period")
+```
+
 
 ## Final Note
 
