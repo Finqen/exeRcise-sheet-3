@@ -185,6 +185,25 @@ d)  Choose one of the variables representing the public response and
 
     What do you notice when comparing the scores of the films in a
     series? Do you see any patterns?
+    
+```{r barplot-score, fig.cap="Barplot of Rotten Tomatoes Scores of the Pixar Film Series"}
+
+combined_series <- pixar_films_public_response_combined %>% 
+  filter(!is.na(series)) %>% 
+  arrange(series, release_date)
+
+# used rotten tomatoes because widely known
+ggplot(combined_series,
+       aes(x = series, y = rotten_tomatoes, fill = film)) +
+  geom_bar(stat = 'identity', position = position_dodge(width = 0.9)) +
+  labs(
+    title = "Rotten tomatoes scores for pixar film series",
+    x = "Film series", y = "Rotten tomate score in %", fill = "Film title"
+  )
+```
+
+
+### We see on the first view that "Cars 2" compared to all film series and even compared to the other "Cars" movies was a flop. Also we see that two film series have a stronger score on the second film and three film plus series have the highest score for the first movie of the sequence. Best movies based on the rotten tomates score are Toy Story 1 and 2.
 
 ## Exercise 4: Open Analysis (4 points)
 
