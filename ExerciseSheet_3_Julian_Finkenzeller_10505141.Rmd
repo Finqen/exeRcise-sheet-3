@@ -103,7 +103,7 @@ a)  Load the `pixar_films` dataset into R. Clean the dataset by removing
 
 ```{r, echo=TRUE}
 library(readr)
-pixar_films <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-03-11/pixar_films.csv')
+pixar_films <- read_csv('data/pixar_films.csv')
 
 library(tidyverse)
 pixar_films_clean <- pixar_films %>%
@@ -160,7 +160,7 @@ c)  Load the `public_response` dataframe into R. Convert the
 ### Cinema score ratings ascending: A-, A, A+   
     
 ```{r}
-public_response <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-03-11/public_response.csv')
+public_response <- read_csv('data/public_response.csv')
 
 public_response <- public_response %>% mutate(cinema_score = factor(cinema_score,
                                                                     levels = c("A-", "A", "A+"), ordered = TRUE))
@@ -215,6 +215,7 @@ a)  Go to <https://github.com/owid/owid-datasets/tree/master/datasets>
     and choose a dataset that interests you. You can have a look at
     <https://ourworldindata.org/> to gather some inspiration.
 b)  Download the dataset and track it in git.
+
 c)  Put the name / title of the dataset and a link to it below.
 
 -   Dataset Name: ...
